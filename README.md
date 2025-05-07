@@ -1,0 +1,1 @@
+# master-s-thesis-integrating-knowledge-graphs-with-logic-tensor-netowrks
