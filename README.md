@@ -1,1 +1,1 @@
-# master-s-thesis-integrating-knowledge-graphs-with-logic-tensor-netowrks
+# Master's Thesis: Integrating Knowledge Graphs With Logic Tensor Networks
