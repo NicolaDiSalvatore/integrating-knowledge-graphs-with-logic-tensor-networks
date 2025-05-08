@@ -1,3 +1,16 @@
+"""
+This script generates hierarchies (hypernym/hyponym structures) for aligned Visual Genome data.
+
+Step-by-step overview of the script:
+
+1. Loads required modules and libraries.
+2. Load Visual Genome Data.
+3. Extract Concept Columns.
+4. Generate Hierarchies for Visual Genome data.
+5. Generate Hierarchies for General Hypernyms.
+6. Generate Hierarchies for Functional Relations (`related_to`, `capable_of`, `not_capable_of`)
+"""
+
 import src
 import joblib
 import time
@@ -27,7 +40,7 @@ objects_hierarchies = find_hierarchical_concepts_batch(aligned_unique_objects)
 end = time.time()
 total_time = end - start
 total_time_minutes = total_time / 60
-print(f"Time taken for objects hierarchies generation: {total_time_minutes:.4f} minutes")
+logger.info(f"Time taken for objects hierarchies generation: {total_time_minutes:.4f} minutes")
 # joblib.dump(objects_hierarchies, 'objects_hierarchies3.joblib')
 # objects_and_attributes_hierarchies.to_json('objects_hierarchies3.json', orient='records', lines=True)
 
@@ -37,7 +50,7 @@ attributes_hierarchies = find_hierarchical_concepts_batch(attributes_concepts)
 end = time.time()
 total_time = end - start
 total_time_minutes = total_time / 60
-print(f"Time taken for attributes hierarchies generation: {total_time_minutes:.4f} minutes")
+logger.info(f"Time taken for attributes hierarchies generation: {total_time_minutes:.4f} minutes")
 # joblib.dump(attributes_hierarchies, 'attributes_hierarchies.joblib')
 # attributes_hierarchies.to_json('attributes_hierarchies.json', orient='records', lines=True)
 
@@ -48,7 +61,7 @@ objects_and_attributes_hierarchies = find_hierarchical_concepts_batch(aligned_un
 end = time.time()
 total_time = end - start
 total_time_minutes = total_time / 60
-print(f"Time taken for objects and attributes hierarchies generation: {total_time_minutes:.4f} minutes")
+logger.info(f"Time taken for objects and attributes hierarchies generation: {total_time_minutes:.4f} minutes")
 # joblib.dump(objects_and_attributes_hierarchies, 'objects_and_attributes_hierarchies3.joblib')
 # objects_and_attributes_hierarchies.to_json('objects_and_attributes_hierarchies3.json', orient='records', lines=True)
 
@@ -59,7 +72,7 @@ predicates_hierarchies = find_hierarchical_concepts_batch(predicates_concepts)
 end = time.time()
 total_time = end - start
 total_time_minutes = total_time / 60
-print(f"Time taken for predicates hierarchies generation: {total_time_minutes:.4f} minutes")
+logger.info(f"Time taken for predicates hierarchies generation: {total_time_minutes:.4f} minutes")
 # joblib.dump(predicates_hierarchies, 'predicates_hierarchies.joblib')
 # predicates_hierarchies.to_json('predicates_hierarchies.json', orient='records', lines=True)
 # predicates_hierarchies.to_csv("predicates_hierarchies.csv", sep=';')

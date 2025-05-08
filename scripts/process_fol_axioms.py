@@ -1,3 +1,24 @@
+"""
+This script generates first-order logic (FOL) axioms using 
+semantic embeddings (ConceptNet Numberbatch) and data generated in other scripts. 
+More information about the axioms is contained in the master's thesis pdf file and the presentation.
+
+Step-by-step overview of the script:
+
+1. Import required libraries and FOL generation functions.
+2. Load various precomputed semantic structures and hierarchies (joblib files).
+3. Load Numberbatch embeddings to support concept similarity computations.
+4. Generate equivalence axioms.
+5. Generate negative axioms.
+6. Generated ontological axioms from hierarchical structures.
+7. Generate domain and range axioms.
+8. Extend hypernym axioms by layering in domain, range, negative, and equivalence 
+    information for each concept.
+"""
+
+
+
+
 import pandas as pd
 from itertools import combinations
 import joblib
@@ -25,11 +46,11 @@ file_path = 'numberbatch.joblib'
 embeddings_dict = load_numberbatch(file_path)
 concepts = list(embeddings_dict.keys())
 vectors = np.array(list(embeddings_dict.values()), dtype=np.float16)
+admissible_hypernyms = list(general_hypernyms_count['Hypernyms'])
 
 # Generation of equivalence first-order logic axioms for predicates
 equivalence_fol_axioms_for_predicates = generate_equivalence_fol_axioms_for_predicates(semantic_and_functional_relations_general_predicates, embeddings_dict)
 # joblib.dump(equivalence_fol_axioms_for_predicates, "equivalence_fol_axioms_for_predicates.joblib")
-
 
 # Generation of equivalence first-order logic axioms for objects and attributes
 concepts_semantically_related_to_objects_and_attributes = pd.merge(concepts_semantically_related_to_objects_and_attributes, objects_and_attributes_hierarchies, on="concept", how="inner")
@@ -56,7 +77,6 @@ negative_axioms_with_predicates = generate_negative_axioms_with_predicates(range
 # joblib.dump(negative_axioms_with_predicates, "negative_axioms_with_predicates.joblib")
 
 
-#
 hypernyms_fol_axioms = generate_hypernyms_fol_axioms(objects_and_attributes_hierarchies, admissible_hypernyms = list(general_hypernyms_count['Hypernyms']))
 hypernyms_fol_axioms2 = generate_hypernyms_fol_axioms(general_hypernyms_hierarchies, admissible_hypernyms = list(general_hypernyms_count['Hypernyms']))
 
@@ -127,20 +147,14 @@ negative_axioms_with_predicates_antonyms_list = negative_axioms_with_predicates_
 negative_axioms_with_predicates_list = list(set(negative_axioms_with_predicates_list).union(negative_axioms_with_predicates_antonyms_list))
 
 
-
-
-equivalence_fol_axioms_for_objects_and_attributes = equivalence_fol_axioms_for_objects_and_attributes
-equivalence_fol_axioms_for_predicates_list = equivalence_fol_axioms_for_predicates
+equivalence_fol_axioms_for_objects_and_attributes_list = list(equivalence_fol_axioms_for_objects_and_attributes)
+equivalence_fol_axioms_for_predicates_list = list(equivalence_fol_axioms_for_predicates)
 
 hypernyms_fol_axioms_extended = generate_hypernyms_fol_axioms_extended(objects_and_attributes_hierarchies[['concept', 'Hypernyms']], positive_range_fol_axioms_list, axioms_with_hypernyms_column_name='positive_range_fol_axioms_with_hypernyms', admissible_hypernyms = list(general_hypernyms_count['Hypernyms']))
-
-
 
 hypernyms_fol_axioms_extended = generate_hypernyms_fol_axioms_extended(hypernyms_fol_axioms_extended.drop('FOL_ontological_axioms', axis=1), positive_domain_fol_axioms_list, axioms_with_hypernyms_column_name='positive_domain_fol_axioms_with_hypernyms', admissible_hypernyms = list(general_hypernyms_count['Hypernyms']))
 hypernyms_fol_axioms_extended = generate_hypernyms_fol_axioms_extended(hypernyms_fol_axioms_extended.drop('FOL_ontological_axioms', axis=1), positive_domain_using_capable_of_fol_axioms_list, axioms_with_hypernyms_column_name='positive_domain_using_capable_of_fol_axioms_list_with_hypernyms', admissible_hypernyms = list(general_hypernyms_count['Hypernyms']))
 hypernyms_fol_axioms_extended = generate_hypernyms_fol_axioms_extended(hypernyms_fol_axioms_extended.drop('FOL_ontological_axioms', axis=1), negative_domain_using_not_capable_of_fol_axioms_list, axioms_with_hypernyms_column_name='negative_domain_using_not_capable_of_fol_axioms_list_with_hypernyms', admissible_hypernyms = list(general_hypernyms_count['Hypernyms']))
-
-
 
 
 hypernyms_fol_axioms_extended = generate_hypernyms_fol_axioms_extended(hypernyms_fol_axioms_extended.drop('FOL_ontological_axioms', axis=1), negative_axioms_with_general_objects_and_attributes_list, axioms_with_hypernyms_column_name='negative_axioms_with_general_objects_and_attributes_list_with_hypernyms', admissible_hypernyms = list(general_hypernyms_count['Hypernyms']))
@@ -156,18 +170,3 @@ lambda x: len(x) if x else 0)
 
 
 hypernyms_fol_axioms_extended = joblib.load("hypernyms_fol_axioms_extended2.joblib")
-# joblib.dump(predicates_fol_axioms, 'predicates_fol_axioms.joblib')
-
-
-
-
-predicates_fol_axioms = predicates_fol_axioms.drop_duplicates()
-predicates_fol_axioms = predicates_fol_axioms.reset_index(drop=True)
-predicates_fol_axioms = check_negative_fol_axioms_for_predicates(predicates_fol_axioms, negative_axioms_with_predicates_list, axioms_with_concepts_column_name= 'negative_axioms_with_predicate')
-predicates_fol_axioms = check_equivalence_fol_axioms_for_predicates(predicates_fol_axioms, equivalence_fol_axioms_for_predicates, axioms_with_concepts_column_name= 'equivalence_axioms_with_predicate')
-# joblib.dump(predicates_fol_axioms, "predicates_fol_axioms2.joblib")
-
-predicates_fol_axioms = joblib.load('predicates_fol_axioms2.joblib')
-predicates_fol_axioms = predicates_fol_axioms.drop(columns={'equivalence_axioms_with_predicate', 'matching_equivalence_axioms_with_predicate_count'})
-predicates_fol_axioms = check_equivalence_fol_axioms_for_predicates(predicates_fol_axioms, equivalence_fol_axioms_for_predicates, axioms_with_concepts_column_name= 'equivalence_axioms_with_predicate')
-# joblib.dump(predicates_fol_axioms, "predicates_fol_axioms2.joblib")

@@ -1,3 +1,21 @@
+"""
+This script generates domain and range FOL axioms for aligned Visual Genome data.
+
+It is part of a broader pipeline to infer ontological structure and relational semantics for 
+Visual Genome predicates.
+
+Step-by-step functionality:
+
+1. Import libraries and utilities.
+2. Load Visual Genome data.
+3. Merges `subject_synsets` and `object_synsets` in relationships with their corresponding 
+    aligned concepts (objects and attributes).
+3. Generate Positive Domain and Range lists for each predicate.
+4. Attach Hypernyms to Domain and Range.
+5. Generate 'CapableOf'-based Domain lists.
+6. Filters hypernym-based domain/range lists.
+"""
+
 import json
 import os
 import sqlite3

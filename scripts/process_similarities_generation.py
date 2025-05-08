@@ -1,3 +1,17 @@
+"""
+This script generates extended semantic relationships for aligned 
+Visual Genome concepts (objects, attributes, predicates).
+
+Step-by-step overview of the script:
+
+1. Imports utilities and libraries
+2. Load Data
+3. Generate Synonyms & Antonyms for General Predicates and Predicates.
+4. Generate Synonyms for General Objects and Attributes.
+5. Generate Synonyms for General Objects and Attributes and Objects and Attributes.
+"""
+
+
 import time
 import joblib
 import logging

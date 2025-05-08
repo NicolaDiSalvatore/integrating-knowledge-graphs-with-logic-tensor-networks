@@ -1,3 +1,22 @@
+"""
+Generate statistics on the generated axioms and Visual Genome concepts aligned with ConceptNet by computing statistics.
+
+Step-by-step overview of the script:
+
+1. Imports utility functions and libraries.
+2. Load Visual Genome data
+3. Compute Alignment Metrics.
+4. Merge Aligned Predicates.
+5. Count Axioms per Predicate
+6. Enrich with Axioms Context-
+7. Generate Aggregated Statistics across all triples and images.
+8. Create Visualizations.
+9. Compute Concept Frequencies and identifies the most general predicates and objects/attributes.
+"""
+
+
+
+
 import src
 from src.statistics_generation import count_strings_in_df_column, count_strings_with_frequency, get_total_counts, categorize_relationships, load_joblib_file,standardize_most_similar_concept, fetch_relationship_counts_optimized, calculate_alignment_metrics, calculate_mean_std_alignment_metrics, count_equivalence_axioms_for_df, count_negative_axioms_for_df, count_predicate_in_lhs, process_row, clean_nan_from_lists, format_list_for_latex, wrap_labels
 import joblib
@@ -9,7 +28,7 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 
-# Script contained in statistics generation
+
 
 aligned_unique_objects_and_attributes = joblib.load('aligned_unique_objects_and_attributes3.joblib')
 aligned_unique_attributes = joblib.load("aligned_unique_attributes2")
@@ -583,13 +602,6 @@ pal = [ "#167288", "#8cdaec", "#b45248", "#d48c84", "#a89a49", "#d6cfa2", "#3cb4
 
 
 
-with open('fol_axioms.txt', 'w', encoding='utf-8') as f:
-    for name, lst in lists.items():
-        formatted_text = format_list_for_latex(lst, name)
-        f.write(formatted_text)
-        f.write("\n")
-
-print("Lists saved to fol_axioms.txt")
 
 
 fig = plt.figure(figsize=(14, 9))

@@ -1,3 +1,17 @@
+"""
+This script generates triples between aligned Visual Genome concepts leveraging ConceptNet.
+
+Step-by-step overview of the script:
+
+1. Imports utilities and libraries.
+2. Load Data.
+3. Prepare and Clean Aligned Concept Lists.
+5. Generate Relationships Between Concepts.
+6. Expand Relationships Beyond VG Pairs.
+"""
+
+
+
 import joblib
 from src.triples_generation import add_related_and_capable_to_concept_columns, add_related_and_capable_columns, add_related_and_capable_to_synonyms_columns, add_related_and_capable_to_antonyms_columns, format_predicate, find_relationships_with_synonyms, find_relationships_with_synonyms_complete
 import logging

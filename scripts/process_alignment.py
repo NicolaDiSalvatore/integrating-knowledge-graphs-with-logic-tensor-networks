@@ -1,3 +1,18 @@
+"""
+This script aligns WordNet-based synsets (used in the Visual Genome dataset) with ConceptNet concepts 
+using semantic embeddings from Numberbatch.
+
+Step-by-step overview of the script:
+
+1. Imports required modules and resources
+2. Load Visual Genome Data
+3. Loads ConceptNet Numberbatch embeddings
+4. Align Synsets to ConceptNet
+5. Extract and Clean Unique Alignments
+6. Merge Alignments
+7. Performs top-5 similarity search, intended to be used to generate statistics on the alignment,  
+"""
+
 import pandas as pd
 import logging
 from pathlib import Path
@@ -14,10 +29,9 @@ nlp = spacy.load("en_core_web_sm")
 
 
 
-# Set up logging
+
 logger = logging.getLogger("scripts.process_alignment")
 
-# Directory containing data
 project_root = Path(__file__).resolve().parent.parent
 data_dir = project_root / "data"
 logger.info(f"Data directory: {data_dir}")

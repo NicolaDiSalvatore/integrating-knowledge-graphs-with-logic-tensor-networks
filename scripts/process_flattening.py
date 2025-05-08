@@ -1,3 +1,14 @@
+"""
+This script handles the flattening and merging of raw JSON data from the Visual Genome dataset
+into structured and compressed `.joblib` files.
+
+Step-by-step overview of the script:
+
+1. Load libraries and data
+2. Flatten JSON Files.
+3. Merge and Integrates flattened data.
+"""
+
 import json
 import pandas as pd
 import joblib
@@ -105,8 +116,6 @@ logger.info("All JSON files have been flattened and saved as .joblib files.")
 
 
 #MERGE SECTION
-
-
 
 # Merge and Save Objects with Attributes
 objects_attributes = pd.merge(objects_data, attributes_data, on='object_id', how='left',
